@@ -48,32 +48,32 @@ const PostsDisplay = () => {
   }, [maxPrice]);
 
   // Apply filters whenever posts or filter values change
-  useEffect(() => {
-    if (posts?.data) {
-      const filtered = posts.data.filter((post) => {
-        // Skip blocked posts
-        if (post.status !== "active") return false;
+  // useEffect(() => {
+  //   if (posts?.data) {
+  //     const filtered = posts.data.filter((post) => {
+  //       // Skip blocked posts
+  //       if (post.status !== "active") return false;
 
-        // Search filter
-        const matchesSearch =
-          searchTerm === "" ||
-          post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          post.description.toLowerCase().includes(searchTerm.toLowerCase());
+  //       // Search filter
+  //       const matchesSearch =
+  //         searchTerm === "" ||
+  //         post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+  //         post.description.toLowerCase().includes(searchTerm.toLowerCase());
 
-        // Category filter
-        const matchesCategory =
-          categoryFilter === "all" || post.category?._id === categoryFilter;
+  //       // Category filter
+  //       const matchesCategory =
+  //         categoryFilter === "all" || post.category?._id === categoryFilter;
 
-        // Price filter
-        const postPrice = parseFloat(post.price?.$numberDecimal || post.price);
-        const matchesPrice =
-          postPrice >= priceRange[0] && postPrice <= priceRange[1];
+  //       // Price filter
+  //       const postPrice = parseFloat(post.price?.$numberDecimal || post.price);
+  //       const matchesPrice =
+  //         postPrice >= priceRange[0] && postPrice <= priceRange[1];
 
-        return matchesSearch && matchesCategory && matchesPrice;
-      });
-      setFilteredPosts(filtered);
-    }
-  }, [posts, searchTerm, categoryFilter, priceRange]);
+  //       return matchesSearch && matchesCategory && matchesPrice;
+  //     });
+  //     setFilteredPosts(filtered);
+  //   }
+  // }, [posts, searchTerm, categoryFilter, priceRange]);
 
   if (postsLoading || categoriesLoading) {
     return (
@@ -115,8 +115,7 @@ const PostsDisplay = () => {
               </Button>
             </InputGroup>
           </Col>
-
-          {/* Category Filter */}
+          Category Filter
           <Col md={3}>
             <Form.Select
               value={categoryFilter}
@@ -131,7 +130,6 @@ const PostsDisplay = () => {
               ))}
             </Form.Select>
           </Col>
-
           {/* Price Range Filter */}
           <Col md={3}>
             <Form.Label className="text-dark">
@@ -148,31 +146,13 @@ const PostsDisplay = () => {
         </Row>
       </div>
 
-      {/* Posts Grid */}
-      {filteredPosts.length > 0 ? (
-        <Row xs={1} md={2} lg={3} className="g-4">
-          {filteredPosts.map((post) => (
-            <Col key={post._id}>
-              <PostCard post={post} />
-            </Col>
-          ))}
-        </Row>
-      ) : (
-        <div className="text-center py-5">
-          <h4>No active posts found matching your criteria</h4>
-          <Button
-            variant="outline-primary"
-            className="mt-3"
-            onClick={() => {
-              setSearchTerm("");
-              setCategoryFilter("all");
-              setPriceRange([0, maxPrice]);
-            }}
-          >
-            Reset Filters
-          </Button>
-        </div>
-      )}
+      <Row xs={1} md={2} lg={3} className="g-4">
+        {categories?.map((item) => (
+          <Col key={item._id}>
+            <PostCard post={item} />
+          </Col>
+        ))}
+      </Row>
     </Container>
   );
 };

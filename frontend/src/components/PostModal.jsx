@@ -28,7 +28,7 @@ const PostModal = ({ show, onHide, post, img }) => {
 
   const [editedData, setEditedData] = useState({
     postId: post._id,
-    title: post.title,
+    title: post.name,
     description: post.description,
     imageUrl: post.imageUrl,
     price: parseFloat(post.price?.$numberDecimal).toFixed(2) || 0,
@@ -107,10 +107,10 @@ const PostModal = ({ show, onHide, post, img }) => {
   return (
     <Modal show={show} onHide={onHide} size="lg" centered>
       <Modal.Header closeButton>
-        <Modal.Title>{isEditing ? "Edit Post" : post.title}</Modal.Title>
+        <Modal.Title>{isEditing ? "Edit Post" : post.name}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <img src={img} alt={post.title} className="img-fluid rounded mb-3" />
+        <img src={img} alt={post.name} className="img-fluid rounded mb-3" />
 
         <div className="mb-3">
           <Badge bg="secondary" className="me-2">

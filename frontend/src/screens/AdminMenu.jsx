@@ -86,7 +86,7 @@ const AdminMenu = () => {
         <Row>
           <Col sm={4}>
             <Form.Control
-              type="text-area"
+              as="textarea"
               name="description"
               value={data.description}
               onChange={handleChange}
