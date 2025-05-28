@@ -5,8 +5,17 @@ const itemSchema=mongoose.Schema({
         description:{type:String,required:true},
         price:{type:mongoose.Schema.Types.Decimal128,required:true},
         imageUrl: {type: String,required: true},
+        likes: [{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User',
+            default:[]
+          }],
     },
     {timestamps:true}
 );
+itemSchema.query.liked=function(userId){
+    return this.where({likes:userId})
+  }
+  
 
 module.exports=mongoose.model('Item',itemSchema)

@@ -1,5 +1,4 @@
 import { useState, useEffect, useMemo } from "react";
-import { usePostsQuery } from "../api/post";
 import { useItemsQuery } from "../api/item";
 import {
   Container,
@@ -11,7 +10,7 @@ import {
   Spinner,
   Alert,
 } from "react-bootstrap";
-import PostCard from "./PostCard";
+import ItemCard from "./ItemCard";
 
 const PostsDisplay = () => {
   // Data fetching
@@ -19,7 +18,7 @@ const PostsDisplay = () => {
     data: posts,
     isLoading: postsLoading,
     error: postsError,
-  } = usePostsQuery();
+  } = useItemsQuery();
   const { data: categories, isLoading: categoriesLoading } = useItemsQuery();
 
   // State for filters
@@ -46,34 +45,6 @@ const PostsDisplay = () => {
   useEffect(() => {
     setPriceRange([0, maxPrice]);
   }, [maxPrice]);
-
-  // Apply filters whenever posts or filter values change
-  // useEffect(() => {
-  //   if (posts?.data) {
-  //     const filtered = posts.data.filter((post) => {
-  //       // Skip blocked posts
-  //       if (post.status !== "active") return false;
-
-  //       // Search filter
-  //       const matchesSearch =
-  //         searchTerm === "" ||
-  //         post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-  //         post.description.toLowerCase().includes(searchTerm.toLowerCase());
-
-  //       // Category filter
-  //       const matchesCategory =
-  //         categoryFilter === "all" || post.category?._id === categoryFilter;
-
-  //       // Price filter
-  //       const postPrice = parseFloat(post.price?.$numberDecimal || post.price);
-  //       const matchesPrice =
-  //         postPrice >= priceRange[0] && postPrice <= priceRange[1];
-
-  //       return matchesSearch && matchesCategory && matchesPrice;
-  //     });
-  //     setFilteredPosts(filtered);
-  //   }
-  // }, [posts, searchTerm, categoryFilter, priceRange]);
 
   if (postsLoading || categoriesLoading) {
     return (
@@ -149,7 +120,7 @@ const PostsDisplay = () => {
       <Row xs={1} md={2} lg={3} className="g-4">
         {categories?.map((item) => (
           <Col key={item._id}>
-            <PostCard post={item} />
+            <ItemCard item={item} />
           </Col>
         ))}
       </Row>

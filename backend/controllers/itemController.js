@@ -34,4 +34,43 @@ const getItems=asyncHandler(async(req,res)=>{
     }
     res.status(200).json(categories)
 })
-module.exports={addItem,deleteItem,getItems}
+
+const toggleLikeItem=asyncHandler(async(req,res)=>{
+    const item=await Item.findById(req.params.id)
+    if(!item){
+        res.status(400)
+        throw new Error('Item not found')
+    }
+
+    const userId = req.user.userId;
+    const likeIndex = item.likes.indexOf(userId);
+
+    // Toggle like
+    if (likeIndex === -1) {
+    // Add like
+    console.log('add like')
+        item.likes.push(userId);
+        await item.save();
+        res.status(200).json({
+            message: 'Item liked',
+            likes: item.likes,
+            isLiked: true
+        });
+    } else {
+    // Remove like
+    console.log('rem like')
+        item.likes.pull(userId);
+        await item.save();
+        res.status(200).json({
+            message: 'Post unliked',
+            likes: item.likes,
+            isLiked: false
+        });
+    }
+})
+const getLikedItems=asyncHandler(async(req,res)=>{
+    console.log('get liked')
+    const items=await Item.find().liked(req.user.userId)
+    res.status(200).json(items)
+})
+module.exports={addItem,deleteItem,getItems, toggleLikeItem,getLikedItems}

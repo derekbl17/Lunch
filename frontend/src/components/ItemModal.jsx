@@ -13,7 +13,7 @@ import {
 } from "../api/comment";
 import Swal from "sweetalert2";
 
-const PostModal = ({ show, onHide, post, img }) => {
+const ItemModal = ({ show, onHide, post, img }) => {
   const { user } = useAuth();
   const isAuthor = user?._id === post?.author?._id;
 
@@ -266,4 +266,4 @@ const PostModal = ({ show, onHide, post, img }) => {
   );
 };
 
-export default PostModal;
+export default ItemModal;

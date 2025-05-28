@@ -1,20 +1,20 @@
 import { Card, Button, Badge, CardText } from "react-bootstrap";
 import { FaRegHeart, FaHeart } from "react-icons/fa";
 import { useAuth } from "../context/authContext";
-import { useLikePostMutation } from "../api/post";
+import { useLikeItemMutation } from "../api/item";
 import { toast } from "react-toastify";
 import { useState, useEffect } from "react";
-import PostModal from "./PostModal";
+import ItemModal from "./ItemModal";
 
-const PostCard = ({ post }) => {
+const ItemCard = ({ item }) => {
   const { user } = useAuth();
-  const { mutate: likePost, error, isError } = useLikePostMutation();
+  const { mutate: likeItem, error, isError } = useLikeItemMutation();
 
   const [showModal, setShowModal] = useState(false);
 
   const [imageError, setImageError] = useState(false);
   const [imageUrl, setImageUrl] = useState(
-    post.imageUrl?.trim() ? post.imageUrl : null
+    item.imageUrl?.trim() ? item.imageUrl : null
   );
 
   useEffect(() => {
@@ -38,11 +38,11 @@ const PostCard = ({ post }) => {
   }, [imageUrl]);
 
   const placeholderUrl = `https://placehold.co/600x400?text=${encodeURIComponent(
-    post.name
+    item.name
   )}`;
 
   const handleLike = () => {
-    likePost(post._id, {
+    likeItem(item._id, {
       onError: (err) =>
         toast.error(err.response?.data?.message || "Failed to like"),
     });
@@ -55,7 +55,7 @@ const PostCard = ({ post }) => {
           <Card.Img
             variant="top"
             src={imageError ? placeholderUrl : imageUrl}
-            alt={post.name}
+            alt={item.name}
             style={{ height: "200px", objectFit: "cover" }}
           />
           <button
@@ -72,7 +72,7 @@ const PostCard = ({ post }) => {
             }}
             onClick={handleLike}
           >
-            {post.likes?.includes(user._id) ? (
+            {item.likes?.includes(user._id) ? (
               <FaHeart className="text-danger" />
             ) : (
               <FaRegHeart />
@@ -80,20 +80,20 @@ const PostCard = ({ post }) => {
           </button>
         </div>
         <Card.Body className="d-flex flex-column">
-          <Card.Title as="h5">{post.name}</Card.Title>
+          <Card.Title as="h5">{item.name}</Card.Title>
           <Card.Text className="text-muted">
-            {post.description.length > 100
-              ? `${post.description.substring(0, 100)}...`
-              : post.description}
+            {item.description.length > 100
+              ? `${item.description.substring(0, 100)}...`
+              : item.description}
           </Card.Text>
           <Card.Text>
-            {parseFloat(post.price?.$numberDecimal).toFixed(2)} eur
+            {parseFloat(item.price?.$numberDecimal).toFixed(2)} eur
           </Card.Text>
           <div className="mt-auto">
             <Badge bg="secondary" className="me-2">
-              {post.category?.name || "Uncategorized"}
+              {item.category?.name || "Uncategorized"}
             </Badge>
-            <Badge bg="info">{post.likes?.length || 0} Likes</Badge>
+            <Badge bg="info">{item.likes?.length || 0} Likes</Badge>
           </div>
         </Card.Body>
         <Card.Footer>
@@ -107,14 +107,14 @@ const PostCard = ({ post }) => {
           </Button>
         </Card.Footer>
       </Card>
-      <PostModal
+      <ItemModal
         show={showModal}
         onHide={() => setShowModal(false)}
-        post={post}
+        post={item}
         img={imageError ? placeholderUrl : imageUrl}
       />
     </>
   );
 };
 
-export default PostCard;
+export default ItemCard;

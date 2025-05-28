@@ -14,10 +14,10 @@ import PrivateRoute from "./components/PrivateRoute.jsx";
 import AdminScreen from "./screens/AdminScreen.jsx";
 import NotFoundScreen from "./screens/NotFoundScreen.jsx";
 import NoAuthorization from "./screens/NoAuthorization.jsx";
-import CreatePostScreen from "./screens/CreatePostScreen.jsx";
+// import CreatePostScreen from "./screens/CreatePostScreen.jsx";
 import LikesScreen from "./screens/LikesScreen.jsx";
-import MyPosts from "./screens/MyPosts.jsx";
-import BlockedPosts from "./screens/AdminBlockedPosts.jsx";
+// import MyPosts from "./screens/MyPosts.jsx";
+// import BlockedPosts from "./screens/AdminBlockedPosts.jsx";
 
 const queryClient = new QueryClient();
 
@@ -35,9 +35,9 @@ const router = createBrowserRouter([
         element: <PrivateRoute allowed={["user", "admin"]} />,
         children: [
           { path: "profile", element: <ProfileScreen /> },
-          { path: "new-post", element: <CreatePostScreen /> },
+          // { path: "new-post", element: <CreatePostScreen /> },
           { path: "liked", element: <LikesScreen /> },
-          { path: "my-posts", element: <MyPosts /> },
+          // { path: "my-posts", element: <MyPosts /> },
         ],
       },
       {
@@ -45,7 +45,7 @@ const router = createBrowserRouter([
         element: <PrivateRoute allowed={["admin"]} />,
         children: [
           { path: "panel", element: <AdminScreen /> },
-          { path: "blocked", element: <BlockedPosts /> },
+          // { path: "blocked", element: <BlockedPosts /> },
         ],
       },
       { path: "*", element: <NotFoundScreen /> },

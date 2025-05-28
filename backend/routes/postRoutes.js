@@ -7,7 +7,6 @@ router.route('/').get(getPosts).post(protect,postPost)
 router.route('/:id').put(protect,putPost).delete(protect,deletePost).patch(protect,adminProtect,moderatePost)
 router.get('/active',getActivePosts)
 router.get('/blocked',getBlockedPosts)
-router.patch('/:id/like',protect,toggleLikePost)
 router.get('/liked',protect,getLikedPosts)
 router.get('/my-posts',protect,getOwnPosts)
 

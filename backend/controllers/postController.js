@@ -117,45 +117,6 @@ const deletePost=asyncHandler(async(req,res)=>{
     }
 })
 
-const toggleLikePost=asyncHandler(async(req,res)=>{
-    const post=await Post.findById(req.params.id)
-    if(!post){
-        res.status(400)
-        throw new Error('Post not found')
-    }
 
-    const userId = req.user.userId;
-    const likeIndex = post.likes.indexOf(userId);
 
-    console.log('trying to like as',req.user.userId)
-
-    if (post.author.toString() === userId.toString()) {
-        res.status(400);
-        throw new Error('Cannot like your own post');
-      }
-
-    // Toggle like
-    if (likeIndex === -1) {
-    // Add like
-    console.log('add like')
-        post.likes.push(userId);
-        await post.save();
-        res.status(200).json({
-            message: 'Post liked',
-            likes: post.likes,
-            isLiked: true
-        });
-    } else {
-    // Remove like
-    console.log('rem like')
-        post.likes.pull(userId);
-        await post.save();
-        res.status(200).json({
-            message: 'Post unliked',
-            likes: post.likes,
-            isLiked: false
-        });
-    }
-})
-
-module.exports={getPosts,postPost,putPost,deletePost,moderatePost, getActivePosts, getBlockedPosts,toggleLikePost,getLikedPosts,getOwnPosts}
+module.exports={getPosts,postPost,putPost,deletePost,moderatePost, getActivePosts, getBlockedPosts,getLikedPosts,getOwnPosts}
