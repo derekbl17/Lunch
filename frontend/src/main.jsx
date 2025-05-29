@@ -5,6 +5,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { AuthProvider } from "./context/authContext.jsx";
+import { CartProvider } from "./context/cartContext.jsx";
 import App from "./App.jsx";
 import HomeScreen from "./screens/HomeScreen.jsx";
 import LoginScreen from "./screens/LoginScreen.jsx";
@@ -15,9 +16,10 @@ import AdminScreen from "./screens/AdminScreen.jsx";
 import NotFoundScreen from "./screens/NotFoundScreen.jsx";
 import NoAuthorization from "./screens/NoAuthorization.jsx";
 // import CreatePostScreen from "./screens/CreatePostScreen.jsx";
-import LikesScreen from "./screens/LikesScreen.jsx";
+import FavoriteScreen from "./screens/FavoriteScreen.jsx";
 // import MyPosts from "./screens/MyPosts.jsx";
 // import BlockedPosts from "./screens/AdminBlockedPosts.jsx";
+import CartScreen from "./screens/CartScreen.jsx";
 
 const queryClient = new QueryClient();
 
@@ -36,8 +38,9 @@ const router = createBrowserRouter([
         children: [
           { path: "profile", element: <ProfileScreen /> },
           // { path: "new-post", element: <CreatePostScreen /> },
-          { path: "liked", element: <LikesScreen /> },
+          { path: "favorites", element: <FavoriteScreen /> },
           // { path: "my-posts", element: <MyPosts /> },
+          { path: "cart", element: <CartScreen /> },
         ],
       },
       {
@@ -56,7 +59,9 @@ const router = createBrowserRouter([
 createRoot(document.getElementById("root")).render(
   <QueryClientProvider client={queryClient}>
     <AuthProvider>
-      <RouterProvider router={router} />
+      <CartProvider>
+        <RouterProvider router={router} />
+      </CartProvider>
     </AuthProvider>
   </QueryClientProvider>
 );

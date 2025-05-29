@@ -2,7 +2,7 @@ import { Container, Row, Col } from "react-bootstrap";
 import { useLikedItemsQuery } from "../api/item";
 import ItemCard from "../components/ItemCard";
 
-const LikesScreen = () => {
+const FavoriteScreen = () => {
   const { data: likedPosts, isLoading, error } = useLikedItemsQuery();
   if (isLoading) return <div>Loading...</div>;
   if (error)
@@ -27,4 +27,4 @@ const LikesScreen = () => {
   );
 };
 
-export default LikesScreen;
+export default FavoriteScreen;

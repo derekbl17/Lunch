@@ -10,9 +10,11 @@ import {
 } from "react-icons/fa";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/authContext";
-import PosterImg from "../assets/Poster.png";
+import DinnerImg from "../assets/TheDinner.png";
+import { useCart } from "../context/cartContext";
 
 export default function Header() {
+  const { cart } = useCart();
   const { logout, user } = useAuth();
 
   const navigate = useNavigate();
@@ -28,7 +30,13 @@ export default function Header() {
 
   return (
     <header>
-      <Navbar bg="primary" variant="dark" expand="lg" collapseOnSelect>
+      <Navbar
+        bg="dark"
+        variant="dark"
+        expand="lg"
+        className=" border-bottom border-warning"
+        collapseOnSelect
+      >
         <Container>
           <Navbar.Brand
             as={NavLink}
@@ -36,9 +44,9 @@ export default function Header() {
             className="d-flex align-items-center"
           >
             <img
-              src={PosterImg}
+              src={DinnerImg}
               alt="Poster"
-              style={{ height: "40px" }} // Control image size
+              style={{ height: "80px" }} // Control image size
             />
           </Navbar.Brand>
 
@@ -50,10 +58,27 @@ export default function Header() {
                 <>
                   <Nav.Link
                     as={NavLink}
-                    to="/liked"
+                    to="/favorites"
                     className="px-3 py-2 hover-bg-primary-dark"
                   >
-                    Liked Items
+                    Favorites
+                  </Nav.Link>
+
+                  <Nav.Link
+                    as={NavLink}
+                    to="/cart"
+                    className="px-3 py-2 position-relative"
+                  >
+                    Item Cart
+                    {cart.length > 0 && (
+                      <Badge
+                        bg="danger"
+                        pill
+                        className="position-absolute top-10 end-1 translate-middle"
+                      >
+                        {cart.reduce((sum, item) => sum + item.qty, 0)}
+                      </Badge>
+                    )}
                   </Nav.Link>
 
                   <NavDropdown
@@ -65,6 +90,7 @@ export default function Header() {
                     id="user-dropdown"
                     align="end"
                     className="hover-bg-primary-dark"
+                    menuVariant="dark"
                   >
                     {user.role === "admin" && (
                       <>
@@ -74,13 +100,6 @@ export default function Header() {
                           className="dropdown-item-hover"
                         >
                           <FaCog /> Admin Panel
-                        </NavDropdown.Item>
-                        <NavDropdown.Item
-                          as={NavLink}
-                          to="/admin/blocked"
-                          className="dropdown-item-hover"
-                        >
-                          <FaBan /> Blocked Posts
                         </NavDropdown.Item>
                       </>
                     )}

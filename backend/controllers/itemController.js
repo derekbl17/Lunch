@@ -48,7 +48,6 @@ const toggleLikeItem=asyncHandler(async(req,res)=>{
     // Toggle like
     if (likeIndex === -1) {
     // Add like
-    console.log('add like')
         item.likes.push(userId);
         await item.save();
         res.status(200).json({
@@ -58,7 +57,6 @@ const toggleLikeItem=asyncHandler(async(req,res)=>{
         });
     } else {
     // Remove like
-    console.log('rem like')
         item.likes.pull(userId);
         await item.save();
         res.status(200).json({
@@ -69,7 +67,6 @@ const toggleLikeItem=asyncHandler(async(req,res)=>{
     }
 })
 const getLikedItems=asyncHandler(async(req,res)=>{
-    console.log('get liked')
     const items=await Item.find().liked(req.user.userId)
     res.status(200).json(items)
 })

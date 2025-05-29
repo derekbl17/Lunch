@@ -106,10 +106,10 @@ const ItemModal = ({ show, onHide, post, img }) => {
 
   return (
     <Modal show={show} onHide={onHide} size="lg" centered>
-      <Modal.Header closeButton>
+      <Modal.Header className="bg-dark text-white" closeButton>
         <Modal.Title>{isEditing ? "Edit Post" : post.name}</Modal.Title>
       </Modal.Header>
-      <Modal.Body>
+      <Modal.Body className="bg-dark text-white">
         <img src={img} alt={post.name} className="img-fluid rounded mb-3" />
 
         <div className="mb-3">
