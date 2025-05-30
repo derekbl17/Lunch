@@ -6,3 +6,8 @@
     background-color: var(--bs-light);
     color: var(--bs-dark);
   }
+
+
+html{
+  background-color: #212529;
+}

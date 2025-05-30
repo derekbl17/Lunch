@@ -1,9 +1,10 @@
 import React from "react";
 import { useCart } from "../context/cartContext";
 import { Button } from "react-bootstrap";
+import Swal from "sweetalert2";
 
 const CartScreen = () => {
-  const { cart, increment, decrement, removeItem } = useCart();
+  const { cart, setCart, increment, decrement, removeItem } = useCart();
 
   // Convert $numberDecimal to a float
   const getPrice = (item) =>
@@ -14,6 +15,17 @@ const CartScreen = () => {
   const getItemTotal = (item) => getPrice(item) * item.qty;
 
   const cartTotal = cart.reduce((acc, item) => acc + getItemTotal(item), 0);
+
+  const handleSubmit = () => {
+    console.log("submited order!");
+    try {
+      setCart([]);
+      Swal.fire({
+        title: "Order placed!",
+        icon: "success",
+      });
+    } catch (error) {}
+  };
 
   if (cart.length === 0) {
     return <p>Your cart is empty.</p>;
@@ -59,6 +71,9 @@ const CartScreen = () => {
       </ul>
       <hr />
       <h3>Subtotal: ${cartTotal.toFixed(2)}</h3>
+      <Button variant="outline-success" onClick={handleSubmit}>
+        Place order
+      </Button>
     </div>
   );
 };

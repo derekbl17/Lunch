@@ -4,13 +4,12 @@ import {
   FaSignOutAlt,
   FaUser,
   FaCog,
-  FaBan,
   FaUserCircle,
   FaUserPlus,
 } from "react-icons/fa";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/authContext";
-import DinnerImg from "../assets/TheDinner.png";
+import DinerImg from "../assets/Diner.png";
 import { useCart } from "../context/cartContext";
 
 export default function Header() {
@@ -44,7 +43,7 @@ export default function Header() {
             className="d-flex align-items-center"
           >
             <img
-              src={DinnerImg}
+              src={DinerImg}
               alt="Poster"
               style={{ height: "80px" }} // Control image size
             />
@@ -56,14 +55,6 @@ export default function Header() {
             <Nav className="ms-auto">
               {user ? (
                 <>
-                  <Nav.Link
-                    as={NavLink}
-                    to="/favorites"
-                    className="px-3 py-2 hover-bg-primary-dark"
-                  >
-                    Favorites
-                  </Nav.Link>
-
                   <Nav.Link
                     as={NavLink}
                     to="/cart"

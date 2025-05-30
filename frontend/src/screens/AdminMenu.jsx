@@ -69,11 +69,12 @@ const AdminMenu = () => {
   };
 
   return (
-    <Container className="mt-4">
+    <Container className="mt-4 bg-black text-white">
       <Form onSubmit={handleSubmit} className="mb-4">
-        <Row className="align-items-center">
+        <Row className="align-items-center mt-1">
           <Col sm={4}>
             <Form.Control
+              className="bg-secondary text-white border-secondary"
               type="text"
               name="name"
               value={data.name}
@@ -86,6 +87,7 @@ const AdminMenu = () => {
         <Row>
           <Col sm={4}>
             <Form.Control
+              className="bg-secondary text-white border-secondary mt-1"
               as="textarea"
               name="description"
               value={data.description}
@@ -98,6 +100,7 @@ const AdminMenu = () => {
         <Row>
           <Col sm={4}>
             <Form.Control
+              className="bg-secondary text-white border-secondary mt-1"
               type="number"
               name="price"
               value={data.price}
@@ -110,6 +113,7 @@ const AdminMenu = () => {
         <Row>
           <Col sm={4}>
             <Form.Control
+              className="bg-secondary text-white border-secondary mt-1"
               type="text"
               name="imageUrl"
               value={data.imageUrl}
@@ -120,7 +124,11 @@ const AdminMenu = () => {
           </Col>
         </Row>
         <Col sm={4}>
-          <Button variant="primary" type="submit" className="w-100">
+          <Button
+            variant="outline-primary"
+            type="submit"
+            className="w-100 mt-2"
+          >
             Submit
           </Button>
         </Col>
@@ -129,11 +137,11 @@ const AdminMenu = () => {
       <Row>
         {items?.map((cat) => (
           <Col sm={6} md={4} key={cat._id} className="mb-3">
-            <Card>
+            <Card bg="dark" text="white">
               <Card.Body>
                 <Card.Title>{cat.name}</Card.Title>
                 <Button
-                  variant="danger"
+                  variant="outline-danger"
                   onClick={handleDelete}
                   value={cat._id}
                   size="sm"

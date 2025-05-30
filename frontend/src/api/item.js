@@ -6,7 +6,6 @@ export function useCreateItemMutation(){
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn:async(itemData)=>{
-      console.log(itemData)
       const {data}=await axios.post('/api/items',{
         itemData
       });
@@ -62,37 +61,6 @@ export function useLikeItemMutation() {
     onSuccess: (data) => {
       queryClient.invalidateQueries(['items']),
       queryClient.invalidateQueries(['likedItems'])
-      // queryClient.setQueryData(['items'], (oldPosts) => {
-      //   if (!oldPosts || !oldPosts.data) return oldPosts;
-
-      //   return {
-      //     ...oldPosts,
-      //     data: oldPosts.data.map((post) => {
-      //       if (post._id === data.postId) {
-      //         return {
-      //           ...post,
-      //           likes: data.likes, // Use updated likes array from server
-      //         };
-      //       }
-      //       return post;
-      //     }),
-      //   };
-      // });
-      // queryClient.setQueryData(['likedPosts'], (old) => {
-      //   if (!old) return old;
-      //   const stillLiked = data.likes.includes(user._id);
-
-      //   return {
-      //     ...old,
-      //     data: stillLiked
-      //       ? old.data.map((post) =>
-      //           post._id === data.postId
-      //             ? { ...post, likes: data.likes }
-      //             : post
-      //         )
-      //       : old.data.filter((post) => post._id !== data.postId),
-      //   };
-      // });
     },
   });
 }
@@ -104,4 +72,19 @@ export function useLikedItemsQuery(){
   })
 }
 
+export function useRateItemsMutation(){
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn:async({postId,rating})=>{
+      console.log("id:",postId)
+      console.log("rate:",rating);
+      
+      const res = await axios.patch(`/api/items/rate/${postId}`,{rating:rating});
+      return res
+    },
+    onSuccess:()=>{
+      queryClient.invalidateQueries(['items'])
+    }
+  })
+}
 

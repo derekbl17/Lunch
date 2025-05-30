@@ -1,4 +1,3 @@
-import React from "react";
 import {
   useGetAllUsersQuery,
   useDeleteUserMutation,
@@ -38,15 +37,17 @@ const AdminUserList = () => {
     });
   };
   return (
-    <Container className="mt-4">
+    <Container className="mt-4 bg-black">
       <Row>
         {users?.map((user) => (
           <Col sm={6} md={4} key={user._id} className="mb-3">
-            <Card>
+            <Card className="bg-dark text-light">
               <Card.Body>
                 <Card.Title>{user.name}</Card.Title>
                 <Button
-                  variant={user.role === "user" ? "warning" : "success"}
+                  variant={
+                    user.role === "user" ? "outline-warning" : "outline-success"
+                  }
                   onClick={handleBlock}
                   value={user._id}
                   className="me-2"
@@ -55,7 +56,7 @@ const AdminUserList = () => {
                   {user.role === "user" ? "Block" : "Unblock"}
                 </Button>
                 <Button
-                  variant="danger"
+                  variant="outline-danger"
                   onClick={handleDelete}
                   value={user._id}
                   size="sm"

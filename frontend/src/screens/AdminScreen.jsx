@@ -1,4 +1,3 @@
-import React from "react";
 import { Container, Row, Col, Card } from "react-bootstrap";
 import AdminMenu from "./AdminMenu";
 import AdminUserList from "./AdminUserList";
@@ -8,9 +7,9 @@ const AdminScreen = () => {
     <Container className="py-4">
       <Row className="mb-4">
         <Col>
-          <Card className="shadow-sm">
+          <Card className="shadow-sm bg-black">
             <Card.Body>
-              <h1 className="mb-4">Manage Menu</h1>
+              <h1 className="mb-4 text-light">Manage Menu</h1>
               <AdminMenu />
             </Card.Body>
           </Card>
@@ -18,9 +17,9 @@ const AdminScreen = () => {
       </Row>
       <Row>
         <Col>
-          <Card className="shadow-sm">
+          <Card className="shadow-sm bg-black">
             <Card.Body>
-              <h1 className="mb-4">Manage Users</h1>
+              <h1 className="mb-4 text-light">Manage Users</h1>
               <AdminUserList />
             </Card.Body>
           </Card>

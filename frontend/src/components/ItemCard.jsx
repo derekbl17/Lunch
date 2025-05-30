@@ -1,19 +1,17 @@
 import { Card, Button, Badge, CardText } from "react-bootstrap";
-import { FaRegStar, FaStar } from "react-icons/fa";
-import { useAuth } from "../context/authContext";
+import StarRatings from "react-star-ratings";
 import { useCart } from "../context/cartContext";
-import { useLikeItemMutation } from "../api/item";
+import { useRateItemsMutation } from "../api/item";
 import { toast } from "react-toastify";
 import { useState, useEffect } from "react";
 import ItemModal from "./ItemModal";
 
 const ItemCard = ({ item }) => {
-  const { user } = useAuth();
   const { cart, addItem, increment, decrement } = useCart();
 
   const cartItem = cart.find((i) => i._id === item._id);
 
-  const { mutate: likeItem, error, isError } = useLikeItemMutation();
+  const { mutateAsync: rateItem } = useRateItemsMutation();
 
   const [showModal, setShowModal] = useState(false);
 
@@ -21,6 +19,10 @@ const ItemCard = ({ item }) => {
   const [imageUrl, setImageUrl] = useState(
     item.imageUrl?.trim() ? item.imageUrl : null
   );
+
+  const [itemRating, setItemRating] = useState(item.rating?.user || 0);
+  const averageRating = item.rating?.average || 0;
+  const totalRatings = item.rating?.rateCount || 0;
 
   useEffect(() => {
     // Basic URL format check before even trying to load
@@ -46,11 +48,18 @@ const ItemCard = ({ item }) => {
     item.name
   )}`;
 
-  const handleLike = () => {
-    likeItem(item._id, {
-      onError: (err) =>
-        toast.error(err.response?.data?.message || "Failed to like"),
-    });
+  const handleRatingChange = async (newRating) => {
+    console.log("RATED AS:", newRating);
+    rateItem(
+      { postId: item._id, rating: newRating },
+      {
+        onSuccess: (res) => {
+          console.log(res.data);
+          setItemRating(res.data.userRating || 0);
+          toast.success("Rating updated");
+        },
+      }
+    );
   };
 
   return (
@@ -63,26 +72,6 @@ const ItemCard = ({ item }) => {
             alt={item.name}
             style={{ height: "200px", objectFit: "cover" }}
           />
-          <Button
-            className="p-2 border-0 bg-transparent"
-            style={{
-              position: "absolute",
-              top: "10px",
-              right: "10px",
-              zIndex: 1,
-              color: "white",
-              fontSize: "1.5rem",
-              transition: "all 0.3s ease",
-              textShadow: "0 2px 4px rgba(0,0,0,0.3)",
-            }}
-            onClick={handleLike}
-          >
-            {item.likes?.includes(user._id) ? (
-              <FaStar className="text-warning" />
-            ) : (
-              <FaRegStar />
-            )}
-          </Button>
         </div>
         <Card.Body className="d-flex flex-column">
           <Card.Title as="h5">{item.name}</Card.Title>
@@ -96,8 +85,28 @@ const ItemCard = ({ item }) => {
           </Card.Text>
           <div className="mt-auto">
             <Badge bg="warning" text="dark">
-              {item.likes?.length || 0} Likes
+              {averageRating} Avg. Rating
+              <br />
+              {totalRatings} Total ratings
             </Badge>
+            <Badge bg="warning" text="dark"></Badge>
+          </div>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              minHeight: "40px",
+            }}
+          >
+            <StarRatings
+              rating={itemRating}
+              starRatedColor="#ffd700"
+              starEmptyColor="#444"
+              changeRating={handleRatingChange}
+              numberOfStars={5}
+              starDimension="25px"
+              starSpacing="2px"
+            />
           </div>
         </Card.Body>
         <Card.Footer className="d-flex justify-content-between">
