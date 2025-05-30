@@ -1,16 +1,32 @@
 import { createContext, useContext, useState, useEffect } from "react";
+import { useAuth } from "./authContext";
 
 const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
-  const [cart, setCart] = useState(() => {
-    const stored = localStorage.getItem("cart");
-    return stored ? JSON.parse(stored) : [];
-  });
+  const { user } = useAuth();
+  const [cart, setCart] = useState([]);
 
   useEffect(() => {
-    localStorage.setItem("cart", JSON.stringify(cart));
-  }, [cart]);
+    if (user?._id) {
+      const stored = localStorage.getItem(`cart_${user._id}`);
+      if (stored) {
+        setCart(JSON.parse(stored));
+      }
+    }
+  }, [user?._id]); // Only run when user._id changes
+
+  useEffect(() => {
+    if (!user) {
+      setCart([]);
+    }
+  }, [user]);
+
+  useEffect(() => {
+    if (user?._id) {
+      localStorage.setItem(`cart_${user?._id}`, JSON.stringify(cart));
+    }
+  }, [cart, user?._id]);
 
   const addItem = (item) => {
     const normalizedItem = {
