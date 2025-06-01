@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Form,
   Button,
@@ -15,14 +15,15 @@ import {
   useDeleteItemMutation,
 } from "../api/item";
 import { toast } from "react-toastify";
+import AdminItemCard from "./AdminItemCard";
 
 const AdminMenu = () => {
   const { mutateAsync } = useCreateItemMutation();
   const {
     data: items,
-    isLoading: isCategoriesLoading,
-    isError: isCategoriesError,
-    error: categoriesError,
+    isLoading: isitemegoriesLoading,
+    isError: isitemegoriesError,
+    error: itemegoriesError,
   } = useItemsQuery();
   const { mutateAsync: deleteItem } = useDeleteItemMutation();
 
@@ -52,18 +53,6 @@ const AdminMenu = () => {
       },
       onError: (err) => {
         toast.error(err.response?.data?.message || "failed to add a item");
-      },
-    });
-  };
-
-  const handleDelete = async (e) => {
-    e.preventDefault();
-    deleteItem(e.target.value, {
-      onSuccess: () => {
-        toast.success("Item removed");
-      },
-      onError: (err) => {
-        toast.error(err.response?.data?.message || "Failed to remove item");
       },
     });
   };
@@ -133,23 +122,11 @@ const AdminMenu = () => {
           </Button>
         </Col>
       </Form>
-
+      {/* Menu items cards */}
       <Row>
-        {items?.map((cat) => (
-          <Col sm={6} md={4} key={cat._id} className="mb-3">
-            <Card bg="dark" text="white">
-              <Card.Body>
-                <Card.Title>{cat.name}</Card.Title>
-                <Button
-                  variant="outline-danger"
-                  onClick={handleDelete}
-                  value={cat._id}
-                  size="sm"
-                >
-                  Delete
-                </Button>
-              </Card.Body>
-            </Card>
+        {items?.map((item) => (
+          <Col sm={6} md={4} key={item._id} className="mb-3">
+            <AdminItemCard item={item} />
           </Col>
         ))}
       </Row>

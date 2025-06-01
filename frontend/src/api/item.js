@@ -40,10 +40,8 @@ export function useDeleteItemMutation(){
 }
 
 export function useLikeItemMutation() {
-  const { user } = useAuth();
   const queryClient = useQueryClient();
   
-
   return useMutation({
     mutationFn: async (postId) => {
       const response = await axios.patch(`/api/items/like/${postId}`);
@@ -65,13 +63,6 @@ export function useLikeItemMutation() {
   });
 }
 
-export function useLikedItemsQuery(){
-  return useQuery({
-      queryKey:['likedItems'],
-      queryFn: async()=> axios.get('/api/items/liked')
-  })
-}
-
 export function useRateItemsMutation(){
   const queryClient = useQueryClient();
   return useMutation({
@@ -88,3 +79,15 @@ export function useRateItemsMutation(){
   })
 }
 
+export function useEditItemMutation(){
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async(itemData)=>{
+      const {data}=await axios.patch(`/api/items/${itemData.itemId}`,itemData.itemData);
+      return data
+    },
+    onSuccess:()=>{
+      queryClient.invalidateQueries(['items'])
+    }
+  })
+}

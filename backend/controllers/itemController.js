@@ -127,4 +127,16 @@ const rateItem=asyncHandler(async(req,res)=>{
   });
 })
 
-module.exports={addItem,deleteItem,getItems, toggleLikeItem,getLikedItems,rateItem}
+const updateItem=asyncHandler(async(req,res)=>{
+  const item = await Item.findById(req.params.id)
+  if (!item) return res(400).json({message:"item not found"});
+
+  Object.keys(req.body).forEach((key) => {
+    item[key] = req.body[key];
+  });
+
+  const updatedItem = await item.save();
+  res.status(200).json(updatedItem);
+})
+
+module.exports={addItem,deleteItem,getItems, toggleLikeItem,getLikedItems,rateItem,updateItem}
